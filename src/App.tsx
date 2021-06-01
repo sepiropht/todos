@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { Graph } from './components/Graph'
 
 function App() {
+  let values: { [key: string]: number } = {
+    '2020-11-24': 4,
+    '2021-01-16': 1,
+    '2021-06-01': 2,
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Graph values={values} until={today()} />
     </div>
-  );
+  )
 }
 
-export default App;
+function today(): string {
+  let today = new Date()
+  const dd = String(today.getDate()).padStart(2, '0')
+  const mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+  const yyyy = today.getFullYear()
+  return `${yyyy}-${mm}-${dd}`
+}
+export default App
