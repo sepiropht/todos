@@ -1,4 +1,6 @@
+import { Container, Box } from '@chakra-ui/react'
 import { Graph } from './components/Graph'
+import { AddTask } from './components/AddTask'
 
 function App() {
   let values: { [key: string]: number } = {
@@ -8,9 +10,12 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Graph values={values} until={today()} />
-    </div>
+    <Container>
+      <AddTask></AddTask>
+      <Box marginTop="15px">
+        <Graph values={values} until={today()} />
+      </Box>
+    </Container>
   )
 }
 
