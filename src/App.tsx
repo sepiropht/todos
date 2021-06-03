@@ -1,8 +1,11 @@
-import { Container, Box } from '@chakra-ui/react'
+import { Box, Grid, Flex } from '@chakra-ui/react'
 import { Graph } from './components/Graph'
 import { AddTask } from './components/AddTask'
+import { Tasks } from './components/Tasks'
 import { useState } from 'react'
 import { Task } from './models'
+import { SideBar } from './components/SideBar'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function App() {
   const [tasks, addTask] = useState<Array<Task>>([])
@@ -13,12 +16,34 @@ function App() {
   }
   console.log(tasks)
   return (
-    <Container>
-      <AddTask add={(task: Task) => addTask([...tasks, task])}></AddTask>
-      <Box marginTop="15px">
-        <Graph values={values} until={today()} />
-      </Box>
-    </Container>
+    <Router>
+      <Grid templateColumns="305px 1fr">
+        <SideBar></SideBar>
+        <Flex padding="30px" flexDirection="column">
+          <Switch>
+            <Route path="/">
+              <h2>Today</h2>
+              <Tasks tasks={tasks}></Tasks>
+              <AddTask
+                add={(task: Task) => addTask([...tasks, task])}
+              ></AddTask>
+              <Box marginTop="15px">
+                <Graph values={values} until={today()} />
+              </Box>
+            </Route>
+            <Route path="/later">
+              <h2>Later</h2>
+              <AddTask
+                add={(task: Task) => addTask([...tasks, task])}
+              ></AddTask>
+              <Box marginTop="15px">
+                <Graph values={values} until={today()} />
+              </Box>
+            </Route>
+          </Switch>
+        </Flex>
+      </Grid>
+    </Router>
   )
 }
 
