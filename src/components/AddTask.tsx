@@ -2,10 +2,18 @@ import { Flex, Text, Input, Button, Box } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { RiCalendarTodoLine } from 'react-icons/ri'
+import DatePicker from 'react-datepicker'
+import { Task } from '../models'
 
-export function AddTask() {
+import 'react-datepicker/dist/react-datepicker.css'
+interface addProps {
+  add: (task: Task) => void
+}
+export function AddTask({ add }: addProps) {
   const [isShow, toogleShow] = useState<boolean>(false)
-  const [task, setTask] = useState<string>('')
+  const [isCalendarshowed, toogleCalendar] = useState<boolean>(false)
+  const [startDate, setStartDate] = useState(new Date())
+  const [taskName, setTask] = useState<string>('')
   return (
     <Box marginTop="15px">
       <Flex
@@ -31,20 +39,40 @@ export function AddTask() {
             placeholder="ex: Buy new stuff"
             variant="unstyled"
           ></Input>
-          <Button
-            leftIcon={<RiCalendarTodoLine />}
-            colorScheme="teal"
-            size="md"
-            width="30%"
-            marginTop="10px"
-            height="30px"
-            variant="outline"
-          >
-            Today
-          </Button>
+          <Flex flexDirection="row">
+            <Button
+              leftIcon={<RiCalendarTodoLine />}
+              colorScheme="teal"
+              size="md"
+              width="30%"
+              marginTop="10px"
+              height="30px"
+              variant="outline"
+              onClick={() => toogleCalendar(true)}
+            >
+              Today
+            </Button>
+            <Box>
+              <DatePicker
+                selected={startDate}
+                onChange={(date: any) => setStartDate(date)}
+              />
+            </Box>
+          </Flex>
         </Flex>
         <Flex justifyContent="flex-start" marginTop="10px">
-          <Button disabled={!task.length} colorScheme="red" variant="solid">
+          <Button
+            onClick={() => {
+              add({
+                name: taskName,
+                date: startDate,
+              })
+              toogleShow(false)
+            }}
+            disabled={!taskName.length}
+            colorScheme="red"
+            variant="solid"
+          >
             Add task
           </Button>
           <Button
