@@ -1,7 +1,6 @@
 import { Flex, Text, Input, Button, Box } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
-import { RiCalendarTodoLine } from 'react-icons/ri'
 import DatePicker from 'react-datepicker'
 import { Task } from '../models'
 
@@ -15,7 +14,7 @@ export function AddTask({ add }: addProps) {
   const [startDate, setStartDate] = useState(new Date())
   const [taskName, setTask] = useState<string>('')
   return (
-    <Box marginTop="15px">
+    <Box marginTop="15px" paddingTop="5px" borderTop="1px solid #e4e4e4">
       <Flex
         display={isShow ? 'none' : 'flex'}
         onClick={() => toogleShow(true)}
@@ -23,7 +22,7 @@ export function AddTask({ add }: addProps) {
         flexDirection="row"
       >
         <AddIcon color="red" h={6}></AddIcon>
-        <Text color="gray" _hover={{ color: 'red' }} marginLeft="10px">
+        <Text color="#c3bebe" _hover={{ color: 'red' }} marginLeft="10px">
           Add task
         </Text>
       </Flex>
@@ -40,17 +39,6 @@ export function AddTask({ add }: addProps) {
             variant="unstyled"
           ></Input>
           <Flex flexDirection="row">
-            <Button
-              leftIcon={<RiCalendarTodoLine />}
-              colorScheme="teal"
-              size="md"
-              width="30%"
-              marginTop="10px"
-              height="30px"
-              variant="outline"
-            >
-              Today
-            </Button>
             <Box>
               <DatePicker
                 selected={startDate}
@@ -66,11 +54,13 @@ export function AddTask({ add }: addProps) {
                 name: taskName,
                 date: startDate,
               })
+              setTask('')
               toogleShow(false)
             }}
             disabled={!taskName.length}
             colorScheme="red"
             variant="solid"
+            fontSize="14px"
           >
             Add task
           </Button>

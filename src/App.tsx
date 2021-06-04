@@ -1,4 +1,4 @@
-import { Box, Grid, Flex } from '@chakra-ui/react'
+import { Box, Grid, Flex, Heading } from '@chakra-ui/react'
 import { Graph } from './components/Graph'
 import { AddTask } from './components/AddTask'
 import { Tasks } from './components/Tasks'
@@ -22,8 +22,19 @@ function App() {
         <Flex padding="30px" flexDirection="column">
           <Switch>
             <Route path="/">
-              <h2>Today</h2>
-              <Tasks tasks={tasks}></Tasks>
+              <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
+                Today
+              </Heading>
+              <Tasks
+                tasks={tasks}
+                removeTask={(task: Task) =>
+                  addTask(
+                    tasks.filter(
+                      (currentTask: Task) => currentTask.name !== task.name
+                    )
+                  )
+                }
+              ></Tasks>
               <AddTask
                 add={(task: Task) => addTask([...tasks, task])}
               ></AddTask>

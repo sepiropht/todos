@@ -24,15 +24,13 @@ export function Graph({ values, until }: GraphProps) {
     'Dec',
   ]
   return (
-    <div className="App">
-      <Calendar
-        values={values}
-        until={until}
-        panelColors={panelColors}
-        weekNames={weekNames}
-        monthNames={monthNames}
-        dateFormat={'YYYY-MM-DD'}
-      />
-    </div>
+    <Calendar
+      values={values}
+      until={until}
+      panelColors={panelColors}
+      weekNames={weekNames}
+      monthNames={monthNames}
+      dateFormat={'YYYY-MM-DD'}
+    />
   )
 }
