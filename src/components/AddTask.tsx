@@ -3,14 +3,13 @@ import { AddIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { Task } from '../models'
-
 import 'react-datepicker/dist/react-datepicker.css'
+
 interface addProps {
   add: (task: Task) => void
 }
 export function AddTask({ add }: addProps) {
   const [isShow, toogleShow] = useState<boolean>(false)
-  // const [isCalendarshowed, toogleCalendar] = useState<boolean>(false)
   const [startDate, setStartDate] = useState(new Date())
   const [taskName, setTask] = useState<string>('')
   return (

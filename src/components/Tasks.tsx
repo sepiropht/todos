@@ -10,6 +10,7 @@ interface TaskProps {
   task: Task
   removeTask: (task: Task) => void
 }
+
 export function Tasks({ tasks, removeTask }: TasksProps) {
   const renderTasks = tasks.map((task) => (
     <ListItem>

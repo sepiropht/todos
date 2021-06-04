@@ -9,11 +9,12 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function App() {
   const [tasks, addTask] = useState<Array<Task>>([])
-  let values: { [key: string]: number } = {
+  const [history, setHistory] = useState<{ [key: string]: number }>({
     '2020-11-24': 4,
     '2021-01-16': 1,
     '2021-06-01': 2,
-  }
+  })
+
   console.log(tasks)
   return (
     <Router>
@@ -27,19 +28,24 @@ function App() {
               </Heading>
               <Tasks
                 tasks={tasks}
-                removeTask={(task: Task) =>
+                removeTask={(task: Task) => {
+                  const date = format(task.date)
+                  setHistory({
+                    ...history,
+                    [date]: history[date] ? history[date] + 1 : 1,
+                  })
                   addTask(
                     tasks.filter(
                       (currentTask: Task) => currentTask.name !== task.name
                     )
                   )
-                }
+                }}
               ></Tasks>
               <AddTask
                 add={(task: Task) => addTask([...tasks, task])}
               ></AddTask>
               <Box marginTop="15px">
-                <Graph values={values} until={today()} />
+                <Graph values={history} until={format(new Date())} />
               </Box>
             </Route>
             <Route path="/later">
@@ -48,7 +54,7 @@ function App() {
                 add={(task: Task) => addTask([...tasks, task])}
               ></AddTask>
               <Box marginTop="15px">
-                <Graph values={values} until={today()} />
+                <Graph values={history} until={format(new Date())} />
               </Box>
             </Route>
           </Switch>
@@ -58,11 +64,10 @@ function App() {
   )
 }
 
-function today(): string {
-  let today = new Date()
-  const dd = String(today.getDate()).padStart(2, '0')
-  const mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
-  const yyyy = today.getFullYear()
+function format(date: Date): string {
+  const dd = String(date.getDate()).padStart(2, '0')
+  const mm = String(date.getMonth() + 1).padStart(2, '0')
+  const yyyy = date.getFullYear()
   return `${yyyy}-${mm}-${dd}`
 }
 export default App
