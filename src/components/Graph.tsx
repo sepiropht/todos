@@ -1,4 +1,4 @@
-import Calendar from 'react-github-contribution-calendar'
+import Calendar from './reactGithubContrib'
 
 interface GraphProps {
   values: { [key: string]: number }
