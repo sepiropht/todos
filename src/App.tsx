@@ -1,4 +1,11 @@
-import { Box, Grid, Flex, Heading } from '@chakra-ui/react'
+import {
+  Box,
+  Grid,
+  Flex,
+  Heading,
+  Slide,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { Graph } from './components/Graph'
 import { AddTask } from './components/AddTask'
 import { Tasks } from './components/Tasks'
@@ -11,15 +18,27 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 function App() {
   const [tasks, updateTask] = useState<Array<Task>>([])
   const [history, setHistory] = useState<{ [key: string]: number }>({})
-  const [isSideBarHide, tooggleSideBar] = useState<boolean>(false)
+  const { isOpen, onToggle } = useDisclosure()
   return (
     <Router>
-      <Header tooggleSiderBar={() => tooggleSideBar(!isSideBarHide)}></Header>
-      <Grid templateColumns="305px 1fr">
-        <Box visibility={isSideBarHide ? 'hidden' : 'visible'}>
+      <Header tooggleSiderBar={() => onToggle()}></Header>
+      <Grid>
+        <Slide
+          direction="left"
+          in={!isOpen}
+          style={{ zIndex: -1, width: '305px' }}
+        >
           <SideBar></SideBar>
-        </Box>
-        <Flex padding="30px" flexDirection="column">
+        </Slide>
+        <Flex
+          style={
+            isOpen
+              ? { zIndex: -1, marginLeft: '200px' }
+              : { marginLeft: '305px' }
+          }
+          padding="30px"
+          flexDirection="column"
+        >
           <Switch>
             <Route path="/">
               <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
