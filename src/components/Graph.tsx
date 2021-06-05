@@ -1,4 +1,3 @@
-import React from 'react'
 import Calendar from 'react-github-contribution-calendar'
 
 interface GraphProps {
@@ -8,7 +7,7 @@ interface GraphProps {
 
 export function Graph({ values, until }: GraphProps) {
   const panelColors = ['#EEEEEE', '#D6E685', '#8CC665', '#44A340', '#1E6823']
-  const weekNames: string[] = ['Mon', '', 'Wed', '', 'Fri', '', 'Sun']
+  const weekNames: string[] = ['', 'Mon', '', 'Wed', '', 'Fri', '']
   const monthNames: string[] = [
     'Jan',
     'Feb',

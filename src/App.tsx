@@ -4,22 +4,22 @@ import { AddTask } from './components/AddTask'
 import { Tasks } from './components/Tasks'
 import { useState } from 'react'
 import { Task } from './models'
+import { Header } from './components/Header'
 import { SideBar } from './components/SideBar'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function App() {
   const [tasks, addTask] = useState<Array<Task>>([])
-  const [history, setHistory] = useState<{ [key: string]: number }>({
-    '2020-11-24': 4,
-    '2021-01-16': 1,
-    '2021-06-01': 2,
-  })
-
+  const [history, setHistory] = useState<{ [key: string]: number }>({})
+  const [isSideBarHide, tooggleSideBar] = useState<boolean>(false)
   console.log(tasks)
   return (
     <Router>
+      <Header tooggleSiderBar={() => tooggleSideBar(!isSideBarHide)}></Header>
       <Grid templateColumns="305px 1fr">
-        <SideBar></SideBar>
+        <Box visibility={isSideBarHide ? 'hidden' : 'visible'}>
+          <SideBar></SideBar>
+        </Box>
         <Flex padding="30px" flexDirection="column">
           <Switch>
             <Route path="/">
