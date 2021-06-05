@@ -9,10 +9,9 @@ import { SideBar } from './components/SideBar'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function App() {
-  const [tasks, addTask] = useState<Array<Task>>([])
+  const [tasks, updateTask] = useState<Array<Task>>([])
   const [history, setHistory] = useState<{ [key: string]: number }>({})
   const [isSideBarHide, tooggleSideBar] = useState<boolean>(false)
-  console.log(tasks)
   return (
     <Router>
       <Header tooggleSiderBar={() => tooggleSideBar(!isSideBarHide)}></Header>
@@ -34,7 +33,7 @@ function App() {
                     ...history,
                     [date]: history[date] ? history[date] + 1 : 1,
                   })
-                  addTask(
+                  updateTask(
                     tasks.filter(
                       (currentTask: Task) => currentTask.name !== task.name
                     )
@@ -42,7 +41,7 @@ function App() {
                 }}
               ></Tasks>
               <AddTask
-                add={(task: Task) => addTask([...tasks, task])}
+                add={(task: Task) => updateTask([...tasks, task])}
               ></AddTask>
               <Box marginTop="15px">
                 <Graph values={history} until={format(new Date())} />
@@ -51,7 +50,7 @@ function App() {
             <Route path="/later">
               <h2>Later</h2>
               <AddTask
-                add={(task: Task) => addTask([...tasks, task])}
+                add={(task: Task) => updateTask([...tasks, task])}
               ></AddTask>
               <Box marginTop="15px">
                 <Graph values={history} until={format(new Date())} />
