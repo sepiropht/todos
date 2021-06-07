@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import dayjs from 'dayjs'
 import Measure, { BoundingRect } from 'react-measure'
+import ReactTooltip from 'react-tooltip'
 
 interface Props {
   weekNames: string[]
@@ -14,6 +15,7 @@ interface Props {
 interface State {
   columns: number
   maxWidth: number
+  contribution: number
 }
 
 export default class GitHubCalendar extends React.Component<Props, State> {
@@ -29,10 +31,10 @@ export default class GitHubCalendar extends React.Component<Props, State> {
     this.weekLabelWidth = 15
     this.panelSize = 11
     this.panelMargin = 2
-
     this.state = {
       columns: 53,
       maxWidth: 53,
+      contribution: 0,
     }
   }
 
@@ -72,6 +74,11 @@ export default class GitHubCalendar extends React.Component<Props, State> {
     return result
   }
 
+  componentDidUpdate(prevState: any, nextState: any) {
+    console.log('update', 'yeah', { prevState, nextState })
+    ReactTooltip.rebuild()
+  }
+
   render() {
     const columns = this.state.columns
     const values = this.props.values
@@ -87,15 +94,29 @@ export default class GitHubCalendar extends React.Component<Props, State> {
         if (contribution === null) continue
         const pos = this.getPanelPosition(i, j)
         const color = this.props.panelColors[contribution.value]
+        const contrib = contribution.value
         const dom = (
           <rect
             key={'panel_key_' + i + '_' + j}
+            data-for={'panel_key_' + i + '_' + j}
+            data-tip
             x={pos.x}
             y={pos.y}
+            rx="4"
             width={this.panelSize}
             height={this.panelSize}
             fill={color}
-          />
+            onMouseEnter={() => {
+              console.log('enter', { contrib, ...this.state })
+              if (true) {
+                this.setState({
+                  ...this.state,
+                  contribution: contrib,
+                })
+              }
+              this.forceUpdate()
+            }}
+          ></rect>
         )
         innerDom.push(dom)
       }
@@ -109,6 +130,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
           key={'week_key_' + i}
           style={{
             fontSize: 9,
+            color: 'black',
             alignmentBaseline: 'central',
             fill: '#AAA',
           }}
@@ -134,6 +156,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
             key={'month_key_' + i}
             style={{
               fontSize: 10,
+              color: 'black',
               alignmentBaseline: 'central',
               fill: '#AAA',
             }}
@@ -153,6 +176,8 @@ export default class GitHubCalendar extends React.Component<Props, State> {
         {({ measureRef }: any) => (
           <div ref={measureRef} style={{ width: '100%' }}>
             <svg
+              data-for={'panel_key_'}
+              data-tip
               style={{
                 fontFamily:
                   'Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif',
@@ -162,6 +187,13 @@ export default class GitHubCalendar extends React.Component<Props, State> {
             >
               {innerDom}
             </svg>
+            <ReactTooltip id={'panel_key_'}>
+              <span>
+                {this.state.contribution === 1
+                  ? this.state.contribution + ' task done'
+                  : this.state.contribution + ' tasks done'}{' '}
+              </span>
+            </ReactTooltip>
           </div>
         )}
       </Measure>
@@ -197,4 +229,35 @@ GitHubCalendar.defaultProps = {
   ],
   panelColors: ['#EEE', '#DDD', '#AAA', '#444'],
   dateFormat: 'YYYY-MM-DD',
+}
+
+interface TooltipProps {
+  contributions: number
+  day: string
+  isHide: boolean
+}
+
+const Tooltip = ({ contributions, day, isHide }: TooltipProps) => {
+  // if (isHide) return null
+  const contributionText = contributions ? (
+    <p>No contributions on {day}</p>
+  ) : (
+    <p>
+      {contributions} contributions on {day}
+    </p>
+  )
+
+  return (
+    <ReactTooltip id="happyFace">
+      <span
+        style={{
+          backgroundColor: 'black',
+          borderRadius: '5px',
+          fontWeight: 'bolder',
+        }}
+      >
+        {contributionText}
+      </span>
+    </ReactTooltip>
+  )
 }
