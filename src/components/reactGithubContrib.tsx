@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import Measure, { BoundingRect } from 'react-measure'
 import ReactTooltip from 'react-tooltip'
 
@@ -15,7 +15,7 @@ interface Props {
 interface State {
   columns: number
   maxWidth: number
-  contribution: number
+  contribution: string
 }
 
 export default class GitHubCalendar extends React.Component<Props, State> {
@@ -34,7 +34,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
     this.state = {
       columns: 53,
       maxWidth: 53,
-      contribution: 0,
+      contribution: '',
     }
   }
 
@@ -55,7 +55,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
     const lastWeekend = d.endOf('week')
     const endDate = d.endOf('day')
 
-    var result: ({ value: number; month: number } | null)[][] = []
+    var result: ({ value: number; month: number; date: Dayjs } | null)[][] = []
     for (var i = 0; i < columns; i++) {
       result[i] = []
       for (var j = 0; j < 7; j++) {
@@ -64,6 +64,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
           result[i][j] = {
             value: history[date.format(this.props.dateFormat)] || 0,
             month: date.month(),
+            date,
           }
         } else {
           result[i][j] = null
@@ -75,7 +76,6 @@ export default class GitHubCalendar extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevState: any, nextState: any) {
-    console.log('update', 'yeah', { prevState, nextState })
     ReactTooltip.rebuild()
   }
 
@@ -94,7 +94,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
         if (contribution === null) continue
         const pos = this.getPanelPosition(i, j)
         const color = this.props.panelColors[contribution.value]
-        const contrib = contribution.value
+        const { value, date } = contribution
         const dom = (
           <rect
             key={'panel_key_' + i + '_' + j}
@@ -107,13 +107,12 @@ export default class GitHubCalendar extends React.Component<Props, State> {
             height={this.panelSize}
             fill={color}
             onMouseEnter={() => {
-              console.log('enter', { contrib, ...this.state })
-              if (true) {
-                this.setState({
-                  ...this.state,
-                  contribution: contrib,
-                })
-              }
+              this.setState({
+                ...this.state,
+                contribution: `${value} tasks done on ${date.format(
+                  'MMM DD, YYYY'
+                )}`,
+              })
               this.forceUpdate()
             }}
           ></rect>
@@ -188,11 +187,7 @@ export default class GitHubCalendar extends React.Component<Props, State> {
               {innerDom}
             </svg>
             <ReactTooltip id={'panel_key_'}>
-              <span>
-                {this.state.contribution === 1
-                  ? this.state.contribution + ' task done'
-                  : this.state.contribution + ' tasks done'}{' '}
-              </span>
+              <span> {this.state.contribution}</span>
             </ReactTooltip>
           </div>
         )}
