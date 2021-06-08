@@ -33,8 +33,8 @@ function App() {
         <Flex
           style={
             isOpen
-              ? { zIndex: -1, marginLeft: '200px' }
-              : { marginLeft: '305px' }
+              ? { zIndex: -5, marginLeft: '200px' }
+              : { marginLeft: '305px', width: '54%' }
           }
           padding="30px"
           flexDirection="column"
