@@ -36,9 +36,9 @@ function App() {
           flexDirection="column"
         >
           <Switch>
-            <Route path="/">
+            <Route path="/later">
               <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
-                Today
+                Later
               </Heading>
               <Tasks
                 tasks={tasks}
@@ -55,23 +55,21 @@ function App() {
                   )
                 }}
               ></Tasks>
-              <AddTask
-                add={(task: Task) => updateTask([...tasks, task])}
-              ></AddTask>
-              <Box marginTop="15px">
-                <Graph values={history} until={format(new Date())} />
-              </Box>
             </Route>
-            <Route path="/later">
-              <h2>Later</h2>
-              <AddTask
-                add={(task: Task) => updateTask([...tasks, task])}
-              ></AddTask>
-              <Box marginTop="15px">
-                <Graph values={history} until={format(new Date())} />
-              </Box>
+            <Route path="/">
+              <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
+                Today
+              </Heading>
             </Route>
           </Switch>
+          <>
+            <AddTask
+              add={(task: Task) => updateTask([...tasks, task])}
+            ></AddTask>
+            <Box marginTop="15px">
+              <Graph values={history} until={format(new Date())} />
+            </Box>
+          </>
         </Flex>
       </Flex>
     </Router>
