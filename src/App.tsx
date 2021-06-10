@@ -22,20 +22,16 @@ function App() {
   return (
     <Router>
       <Header tooggleSiderBar={() => onToggle()}></Header>
-      <Grid>
+      <Flex justifyContent="center">
         <Slide
           direction="left"
           in={!isOpen}
-          style={{ zIndex: -1, width: '305px' }}
+          style={{ width: '305px', top: '46px' }}
         >
           <SideBar></SideBar>
         </Slide>
         <Flex
-          style={
-            isOpen
-              ? { zIndex: -5, marginLeft: '200px' }
-              : { marginLeft: '305px', width: '54%' }
-          }
+          style={isOpen ? { width: '54%' } : { width: '54%' }}
           padding="30px"
           flexDirection="column"
         >
@@ -77,7 +73,7 @@ function App() {
             </Route>
           </Switch>
         </Flex>
-      </Grid>
+      </Flex>
     </Router>
   )
 }

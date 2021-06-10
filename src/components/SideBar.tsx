@@ -8,7 +8,6 @@ export function SideBar() {
       padding="30px"
       backgroundColor="#FAFAFA"
       flexDirection="column"
-      marginTop="40px"
       height="calc(100vh - 44px)"
     >
       <List>
