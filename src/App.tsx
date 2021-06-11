@@ -1,11 +1,4 @@
-import {
-  Box,
-  Grid,
-  Flex,
-  Heading,
-  Slide,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Box, Flex, Heading, Slide, useDisclosure } from '@chakra-ui/react'
 import { Graph } from './components/Graph'
 import { AddTask } from './components/AddTask'
 import { Tasks } from './components/Tasks'
@@ -13,7 +6,10 @@ import { useState } from 'react'
 import { Task } from './models'
 import { Header } from './components/Header'
 import { SideBar } from './components/SideBar'
+import { Later } from './components/Later'
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import dayjs from 'dayjs'
 
 function App() {
   const [tasks, updateTask] = useState<Array<Task>>([])
@@ -40,8 +36,25 @@ function App() {
               <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
                 Later
               </Heading>
-              <Tasks
+              <Later
                 tasks={tasks}
+                updateTask={(tasks: Task[]) => updateTask(tasks)}
+                setHistory={(date: string) =>
+                  setHistory({
+                    ...history,
+                    [date]: history[date] ? history[date] + 1 : 1,
+                  })
+                }
+              ></Later>
+            </Route>
+            <Route path="/">
+              <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
+                Today
+              </Heading>
+              <Tasks
+                tasks={tasks.filter((task) =>
+                  dayjs(task.date, 'day').isSame(Date.now(), 'day')
+                )}
                 removeTask={(task: Task) => {
                   const date = format(task.date)
                   setHistory({
@@ -55,11 +68,6 @@ function App() {
                   )
                 }}
               ></Tasks>
-            </Route>
-            <Route path="/">
-              <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
-                Today
-              </Heading>
             </Route>
           </Switch>
           <>
