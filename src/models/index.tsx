@@ -1,4 +1,6 @@
 export interface Task {
   name: string
-  date: Date
+  date: Array<Date>
+  isEachWeek?: boolean
+  isEachDay?: boolean
 }

@@ -1,4 +1,13 @@
-import { Flex, Text, Input, Button, Box } from '@chakra-ui/react'
+import {
+  Flex,
+  Text,
+  Input,
+  Button,
+  Box,
+  Stack,
+  Radio,
+  RadioGroup,
+} from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
@@ -12,6 +21,7 @@ export function AddTask({ add }: addProps) {
   const [isShow, toogleShow] = useState<boolean>(false)
   const [startDate, setStartDate] = useState(new Date())
   const [taskName, setTask] = useState<string>('')
+  const [times, setTimes] = useState('0')
   return (
     <Box paddingTop="5px" borderTop="1px solid #e4e4e4">
       <Flex
@@ -44,6 +54,13 @@ export function AddTask({ add }: addProps) {
                 onChange={(date: any) => setStartDate(date)}
               />
             </Box>
+            <RadioGroup onChange={setTimes} value={times}>
+              <Stack direction="row">
+                <Radio value="0">Default</Radio>
+                <Radio value="1">Each week</Radio>
+                <Radio value="2">Each day</Radio>
+              </Stack>
+            </RadioGroup>
           </Flex>
         </Flex>
         <Flex justifyContent="flex-start" marginTop="10px">
@@ -51,7 +68,9 @@ export function AddTask({ add }: addProps) {
             onClick={() => {
               add({
                 name: taskName,
-                date: startDate,
+                date: [startDate],
+                isEachDay: times === '2',
+                isEachWeek: times === '1',
               })
               setTask('')
               toogleShow(false)

@@ -53,10 +53,12 @@ function App() {
               </Heading>
               <Tasks
                 tasks={tasks.filter((task) =>
-                  dayjs(task.date, 'day').isSame(Date.now(), 'day')
+                  task.date.some((date) =>
+                    dayjs(date, 'day').isSame(Date.now(), 'day')
+                  )
                 )}
                 removeTask={(task: Task) => {
-                  const date = format(task.date)
+                  const date = format(new Date())
                   setHistory({
                     ...history,
                     [date]: history[date] ? history[date] + 1 : 1,

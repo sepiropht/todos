@@ -24,10 +24,17 @@ export const Later = ({ tasks, updateTask, setHistory }: LaterProps) => {
       <h4>{dayjs(currentDay).format('MMM DD')}</h4>
       <Tasks
         tasks={tasks.filter((task) =>
-          dayjs(currentDay, 'day').isSame(task.date, 'day')
+          task.date.some(
+            (date) =>
+              dayjs(currentDay, 'day').isSame(date, 'day') ||
+              task.isEachDay ||
+              (task.isEachWeek &&
+                dayjs(new Date()).format('dddd') ===
+                  dayjs(currentDay).format('dddd'))
+          )
         )}
         removeTask={(task: Task) => {
-          const date = format(task.date)
+          const date = format(new Date())
           setHistory(date)
           updateTask(
             tasks.filter((currentTask: Task) => currentTask.name !== task.name)
