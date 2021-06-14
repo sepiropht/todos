@@ -20,7 +20,7 @@ export const Later = ({ tasks, updateTask, setHistory }: LaterProps) => {
     .map((_, index) => dayjs().add(index, 'day'))
 
   const Day = ({ currentDay }: DayProps) => (
-    <Box>
+    <Box paddingTop="28px">
       <h4>{dayjs(currentDay).format('MMM DD')}</h4>
       <Tasks
         tasks={tasks.filter((task) =>

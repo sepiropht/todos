@@ -13,7 +13,7 @@ export function AddTask({ add }: addProps) {
   const [startDate, setStartDate] = useState(new Date())
   const [taskName, setTask] = useState<string>('')
   return (
-    <Box marginTop="15px" paddingTop="5px" borderTop="1px solid #e4e4e4">
+    <Box paddingTop="5px" borderTop="1px solid #e4e4e4">
       <Flex
         display={isShow ? 'none' : 'flex'}
         onClick={() => toogleShow(true)}
