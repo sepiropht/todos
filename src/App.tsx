@@ -6,7 +6,6 @@ import { useState } from 'react'
 import { Task } from './models'
 import { Header } from './components/Header'
 import { SideBar } from './components/SideBar'
-import { Later } from './components/Later'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import dayjs from 'dayjs'
@@ -32,36 +31,15 @@ function App() {
           flexDirection="column"
         >
           <Switch>
-            <Route path="/later">
-              <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
-                Later
-              </Heading>
-              <Later
-                tasks={tasks}
-                updateTask={(tasks: Task[]) => updateTask(tasks)}
-                setHistory={(date: string) =>
-                  setHistory({
-                    ...history,
-                    [date]: history[date] ? history[date] + 1 : 1,
-                  })
-                }
-              ></Later>
-            </Route>
             <Route path="/">
               <Heading fontSize="20px" fontWeight="700" lineHeight="25px">
                 Today
               </Heading>
               <Tasks
-                tasks={tasks.filter((task) =>
-                  task.date.some((date) =>
-                    dayjs(date, 'day').isSame(Date.now(), 'day')
-                  )
-                )}
+                tasks={tasks}
                 removeTask={(task: Task) => {
-                  const date = format(new Date())
                   setHistory({
                     ...history,
-                    [date]: history[date] ? history[date] + 1 : 1,
                   })
                   updateTask(
                     tasks.filter(

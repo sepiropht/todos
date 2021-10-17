@@ -14,9 +14,6 @@ export function SideBar() {
         <ListItem>
           <Link to="/">Today</Link>
         </ListItem>
-        <ListItem>
-          <Link to="/later">Later</Link>
-        </ListItem>
       </List>
     </Flex>
   )

@@ -12,9 +12,9 @@ interface TaskProps {
 }
 
 export function Tasks({ tasks, removeTask }: TasksProps) {
-  const renderTasks = tasks.map((task) => (
-    <ListItem>
-      <TaskC task={task} removeTask={removeTask}></TaskC>
+  const renderTasks = tasks.map((task, index) => (
+    <ListItem key={index}>
+      <TaskC  task={task} removeTask={removeTask}></TaskC>
     </ListItem>
   ))
   return <List>{renderTasks}</List>

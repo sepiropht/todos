@@ -19,7 +19,6 @@ interface addProps {
 }
 export function AddTask({ add }: addProps) {
   const [isShow, toogleShow] = useState<boolean>(false)
-  const [startDate, setStartDate] = useState(new Date())
   const [taskName, setTask] = useState<string>('')
   const [times, setTimes] = useState('0')
   return (
@@ -48,17 +47,10 @@ export function AddTask({ add }: addProps) {
             variant="unstyled"
           ></Input>
           <Flex flexDirection="row">
-            <Box>
-              <DatePicker
-                selected={startDate}
-                onChange={(date: any) => setStartDate(date)}
-              />
-            </Box>
             <RadioGroup onChange={setTimes} value={times}>
               <Stack direction="row">
                 <Radio value="0">Default</Radio>
-                <Radio value="1">Each week</Radio>
-                <Radio value="2">Each day</Radio>
+                <Radio value="1">only today</Radio>
               </Stack>
             </RadioGroup>
           </Flex>
@@ -68,9 +60,7 @@ export function AddTask({ add }: addProps) {
             onClick={() => {
               add({
                 name: taskName,
-                date: [startDate],
-                isEachDay: times === '2',
-                isEachWeek: times === '1',
+                onlyToday: times === '1',
               })
               setTask('')
               toogleShow(false)
